@@ -37,3 +37,30 @@ function makeList(array $data, $ul=true)
 	return $list;
 }
 
+
+function makeListCurr(array $data, $ul=true)
+{
+	$list ='';
+	if($ul)
+	{
+		$list .='<ul>';
+	}
+	else
+	{
+		$list .='<ol>';
+	}
+	foreach($data as $country )
+	{
+		$list .='<li>Country:'.$country['name'].', currency code - '.$country['CurrencyCode'].'</li>';
+	}
+	if($ul)
+	{
+		$list .='</ul>';
+	}
+	else
+	{
+		$list .='</ol>';
+	}
+	return $list;
+}
+

@@ -1,7 +1,28 @@
 <?php
-include_once '/lib/config.php';
-include_once '/lib/functions.php';
-include_once '/lib/FootballClient.php';
+include_once './lib/config.php';
+include_once './lib/functions.php';
+include_once './lib/FootballClient.php';
+include_once './lib/CurrencyClient.php';
+
+
+
+
+if(isset($_POST['soapCurr']))
+{
+    $currClient = new CurrencyClient();
+    $currClient->setWsdl(CURRENCY_SERVICE)->getSoapClient();
+    $res = $currClient->soapGetCurrencyCodes(); 
+}
+
+if(isset($_POST['curlCurr']))
+{
+    $currClient = new CurrencyClient();
+    $currClient->getCurlClient();
+    $currClient->setFuncUrl('http://webservicex.net/country.asmx/GetCurrencies');
+    $res = $currClient->curlGetCurrencyCodes();
+  //  echo'<pre>';
+   // var_dump($res);
+}
 
 if(isset($_POST['soapFoot']))
 {
@@ -34,6 +55,15 @@ if(isset($result))
 else
 {
 	$output['%output%'] = '';
+}
+
+if(isset($res))
+{
+    $output['%outCurr%'] = makeListCurr($res, false);
+}
+else
+{
+	$output['%outCurr%'] = '';
 }
 echo templateRender($output);
 ?>
